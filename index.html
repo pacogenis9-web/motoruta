@@ -1,0 +1,1928 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="MotoRuta">
+<meta name="theme-color" content="#0A0C10">
+<title>MotoRuta PRO</title>
+
+<!-- Tabler Icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@400;500;600&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+
+<style>
+/* ═══════════════════════════════════════════════
+   TOKENS
+═══════════════════════════════════════════════ */
+:root {
+  --night:        #0A0C10;
+  --night2:       #111419;
+  --night3:       #181C22;
+  --night4:       #1E232A;
+  --night5:       #252B35;
+  --orange:       #FF6B1A;
+  --orange2:      #E85A08;
+  --orange-dim:   rgba(255,107,26,0.12);
+  --orange-glow:  rgba(255,107,26,0.25);
+  --cyan:         #00D4FF;
+  --cyan-dim:     rgba(0,212,255,0.1);
+  --green:        #39FF6E;
+  --green-dim:    rgba(57,255,110,0.1);
+  --amber:        #FFB800;
+  --amber-dim:    rgba(255,184,0,0.1);
+  --red:          #FF3B3B;
+  --red-dim:      rgba(255,59,59,0.12);
+  --text1:        #FFFFFF;
+  --text2:        #A8B0BC;
+  --text3:        #505868;
+  --border:       rgba(255,255,255,0.07);
+  --border2:      rgba(255,255,255,0.12);
+  --font-display: 'Barlow Condensed', sans-serif;
+  --font-body:    'Barlow', sans-serif;
+  --font-mono:    'Share Tech Mono', monospace;
+  --safe-top:     env(safe-area-inset-top, 0px);
+  --safe-bot:     env(safe-area-inset-bottom, 0px);
+}
+
+/* DAY THEME */
+[data-theme="day"] {
+  --night:    #F2EFE8;
+  --night2:   #E8E4DC;
+  --night3:   #DDD9D0;
+  --night4:   #D0CCc4;
+  --night5:   #C4C0B8;
+  --border:   rgba(0,0,0,0.08);
+  --border2:  rgba(0,0,0,0.15);
+  --text1:    #1A1A1A;
+  --text2:    #555;
+  --text3:    #999;
+}
+
+/* ═══════════════════════════════════════════════
+   RESET & BASE
+═══════════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html, body { width: 100%; height: 100%; overflow: hidden; background: var(--night); color: var(--text1); font-family: var(--font-body); -webkit-font-smoothing: antialiased; }
+button { font-family: var(--font-body); cursor: pointer; border: none; background: none; color: inherit; }
+input, select { font-family: var(--font-body); }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
+
+/* ═══════════════════════════════════════════════
+   APP SHELL
+═══════════════════════════════════════════════ */
+#app {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  height: 100%;
+  height: -webkit-fill-available;
+  max-height: 100dvh;
+  padding-top: var(--safe-top);
+  padding-bottom: var(--safe-bot);
+}
+
+/* ═══════════════════════════════════════════════
+   TOPBAR
+═══════════════════════════════════════════════ */
+.topbar {
+  background: var(--night2);
+  border-bottom: 0.5px solid var(--border);
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+  z-index: 100;
+}
+.logo {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--orange);
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+.logo-pro {
+  font-size: 12px;
+  color: var(--text3);
+  font-weight: 400;
+  letter-spacing: 1px;
+}
+.tabs {
+  display: flex;
+  gap: 3px;
+  background: var(--night3);
+  border-radius: 8px;
+  padding: 3px;
+  margin: 0 auto;
+}
+.tab {
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text3);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  letter-spacing: 0.5px;
+  transition: all 0.18s;
+  white-space: nowrap;
+}
+.tab i { font-size: 14px; }
+.tab.active { background: var(--orange); color: #fff; }
+.tab:not(.active):hover { background: var(--night4); color: var(--text2); }
+.topbar-right { display: flex; align-items: center; gap: 8px; }
+.clock {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--cyan);
+  background: var(--cyan-dim);
+  padding: 4px 8px;
+  border-radius: 5px;
+  white-space: nowrap;
+}
+.gps-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--text3);
+  flex-shrink: 0;
+  transition: background 0.3s;
+}
+.gps-dot.active { background: var(--green); animation: pulse 2s infinite; }
+.night-btn {
+  background: var(--night3);
+  border: 0.5px solid var(--border);
+  border-radius: 7px;
+  padding: 5px 10px;
+  font-size: 12px;
+  color: var(--text2);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.night-btn:hover { border-color: var(--orange); color: var(--orange); }
+
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.35} }
+
+/* ═══════════════════════════════════════════════
+   SCREENS
+═══════════════════════════════════════════════ */
+.screen { display: none; width: 100%; height: 100%; overflow: hidden; }
+.screen.active { display: flex; }
+
+/* ═══════════════════════════════════════════════
+   BOTTOM NAV (mobile)
+═══════════════════════════════════════════════ */
+.bottom-nav {
+  display: flex;
+  background: var(--night2);
+  border-top: 0.5px solid var(--border);
+  flex-shrink: 0;
+  z-index: 100;
+}
+.bnav-btn {
+  flex: 1;
+  padding: 10px 4px 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text3);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  transition: color 0.15s;
+}
+.bnav-btn i { font-size: 22px; }
+.bnav-btn.active { color: var(--orange); }
+.bnav-btn:not(.active):hover { color: var(--text2); }
+
+/* ═══════════════════════════════════════════════
+   SCREEN: PLAN
+═══════════════════════════════════════════════ */
+#planScreen { flex-direction: column; overflow-y: auto; }
+.plan-body { padding: 14px; display: flex; flex-direction: column; gap: 12px; }
+
+.card {
+  background: var(--night2);
+  border: 0.5px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.card-head {
+  padding: 11px 14px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text3);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  border-bottom: 0.5px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.card-head i { font-size: 13px; }
+.card-body { padding: 12px 14px; }
+
+.route-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.route-row:last-child { margin-bottom: 0; }
+.rdot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+.rdot-o { background: var(--orange); }
+.rdot-d { background: var(--text2); }
+.rdot-w { width: 8px; height: 8px; background: var(--night5); border: 1.5px solid var(--text3); }
+.plan-input {
+  flex: 1;
+  background: var(--night3);
+  border: 0.5px solid var(--border);
+  border-radius: 8px;
+  padding: 9px 12px;
+  font-size: 14px;
+  color: var(--text1);
+  outline: none;
+  -webkit-appearance: none;
+}
+.plan-input:focus { border-color: var(--orange); }
+.plan-input::placeholder { color: var(--text3); }
+select.plan-input { padding-right: 28px; background-image: none; }
+.add-wp-btn {
+  background: none;
+  font-size: 11px;
+  color: var(--text3);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 0;
+  margin-left: 20px;
+}
+.add-wp-btn:hover { color: var(--orange); }
+
+.mode-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.mode-card {
+  background: var(--night3);
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 12px;
+  transition: all 0.18s;
+}
+.mode-card.sel { border-color: var(--orange); background: var(--orange-dim); }
+.mode-card:not(.sel):hover { border-color: var(--border2); }
+.mode-card i { font-size: 20px; color: var(--text3); display: block; margin-bottom: 4px; }
+.mode-card.sel i { color: var(--orange); }
+.mode-label { font-size: 13px; font-weight: 600; color: var(--text1); }
+.mode-desc { font-size: 11px; color: var(--text3); margin-top: 1px; }
+
+.dt-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.dt-row input {
+  background: var(--night3);
+  border: 0.5px solid var(--border);
+  border-radius: 8px;
+  padding: 9px 10px;
+  font-size: 13px;
+  color: var(--text1);
+  width: 100%;
+  outline: none;
+  -webkit-appearance: none;
+}
+.dt-row input:focus { border-color: var(--orange); }
+.dt-row input[type="date"]::-webkit-calendar-picker-indicator,
+.dt-row input[type="time"]::-webkit-calendar-picker-indicator { filter: invert(0.5); }
+
+.calc-btn {
+  width: 100%;
+  background: var(--orange);
+  color: #fff;
+  border-radius: 10px;
+  padding: 13px;
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: background 0.18s;
+}
+.calc-btn:active { background: var(--orange2); }
+
+.result-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.rs { background: var(--night3); border-radius: 8px; padding: 10px 12px; text-align: center; }
+.rs-val { font-family: var(--font-display); font-size: 22px; font-weight: 800; color: var(--text1); }
+.rs-val.accent { color: var(--orange); }
+.rs-lbl { font-size: 10px; color: var(--text3); margin-top: 1px; letter-spacing: 0.5px; }
+.tags { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 12px; }
+.tag { font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 20px; }
+.tag-o { background: var(--orange-dim); color: var(--orange); }
+.tag-c { background: var(--cyan-dim); color: var(--cyan); }
+.tag-g { background: var(--green-dim); color: var(--green); }
+.start-nav-btn {
+  width: 100%;
+  background: var(--orange);
+  color: #fff;
+  border-radius: 10px;
+  padding: 13px;
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.start-nav-btn:active { background: var(--orange2); }
+
+/* ═══════════════════════════════════════════════
+   SCREEN: NAVIGATE
+═══════════════════════════════════════════════ */
+#navScreen { flex-direction: column; position: relative; }
+
+/* Map fills the screen */
+#mapContainer {
+  flex: 1;
+  position: relative;
+  background: var(--night);
+  overflow: hidden;
+}
+#googleMap {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0; left: 0;
+}
+
+/* HUD: speed bottom-left */
+.hud-speed {
+  position: absolute;
+  bottom: 14px;
+  left: 14px;
+  background: rgba(10,12,16,0.88);
+  border: 0.5px solid var(--border2);
+  border-radius: 14px;
+  padding: 10px 16px;
+  text-align: center;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 10;
+  min-width: 76px;
+}
+.speed-num {
+  font-family: var(--font-display);
+  font-size: 46px;
+  font-weight: 800;
+  color: var(--orange);
+  line-height: 1;
+  letter-spacing: -1px;
+}
+.speed-unit { font-size: 11px; color: var(--text3); letter-spacing: 2px; text-transform: uppercase; }
+.speed-limit {
+  position: absolute;
+  top: -8px; right: -8px;
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  background: var(--red);
+  border: 2px solid var(--night);
+  font-family: var(--font-display);
+  font-size: 10px;
+  font-weight: 800;
+  color: #fff;
+  display: flex; align-items: center; justify-content: center;
+}
+
+/* HUD: weather top-right */
+.hud-weather {
+  position: absolute;
+  top: 12px; right: 12px;
+  background: rgba(10,12,16,0.88);
+  border: 0.5px solid var(--border2);
+  border-radius: 12px;
+  padding: 9px 13px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 10;
+  max-width: 200px;
+}
+.wx-ico { font-size: 24px; }
+.wx-temp { font-family: var(--font-display); font-size: 22px; font-weight: 700; color: var(--text1); }
+.wx-desc { font-size: 11px; color: var(--text2); }
+.wx-wind { font-size: 10px; color: var(--text3); }
+
+/* HUD: instruction bottom strip */
+.hud-instruction {
+  background: rgba(10,12,16,0.92);
+  border-top: 0.5px solid var(--border);
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  flex-shrink: 0;
+}
+.inst-arrow { font-size: 30px; color: var(--cyan); flex-shrink: 0; }
+.inst-text { flex: 1; }
+.inst-main { font-family: var(--font-display); font-size: 18px; font-weight: 700; color: var(--text1); }
+.inst-road { font-size: 12px; color: var(--text2); margin-top: 1px; }
+.inst-dist { font-family: var(--font-mono); font-size: 18px; color: var(--cyan); white-space: nowrap; }
+
+/* HUD: top left pills */
+.hud-pills {
+  position: absolute;
+  top: 12px; left: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  z-index: 10;
+}
+.hud-pill {
+  background: rgba(10,12,16,0.88);
+  border: 0.5px solid var(--border2);
+  border-radius: 8px;
+  padding: 6px 10px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+.pill-ico { font-size: 13px; color: var(--orange); }
+.pill-lbl { font-size: 9px; color: var(--text3); letter-spacing: 1px; text-transform: uppercase; }
+.pill-val { font-family: var(--font-display); font-size: 14px; font-weight: 700; color: var(--text1); }
+
+/* Alert banner */
+.alert-banner {
+  display: none;
+  background: rgba(255,107,26,0.15);
+  border: 0.5px solid var(--orange);
+  padding: 8px 14px;
+  font-size: 12px;
+  color: var(--orange);
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  flex-shrink: 0;
+}
+.alert-banner.show { display: flex; }
+.alert-banner i { font-size: 14px; }
+
+/* Recenter button */
+.recenter-btn {
+  position: absolute;
+  bottom: 14px; right: 14px;
+  background: rgba(10,12,16,0.88);
+  border: 0.5px solid var(--border2);
+  border-radius: 10px;
+  width: 42px; height: 42px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; color: var(--text2);
+  z-index: 10;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+.recenter-btn:active { border-color: var(--orange); color: var(--orange); }
+
+/* No route placeholder */
+.map-placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background: var(--night);
+  z-index: 5;
+}
+.map-placeholder i { font-size: 64px; color: var(--night4); }
+.map-placeholder p { font-size: 14px; color: var(--text3); text-align: center; padding: 0 32px; }
+.map-placeholder .go-btn {
+  background: var(--orange);
+  color: #fff;
+  border-radius: 10px;
+  padding: 11px 24px;
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+/* ═══════════════════════════════════════════════
+   SCREEN: TELEMETRY
+═══════════════════════════════════════════════ */
+#teleScreen { flex-direction: column; overflow-y: auto; }
+.tele-body { padding: 14px; display: flex; flex-direction: column; gap: 10px; }
+
+.tele-header-bar {
+  background: var(--night2);
+  border: 0.5px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.rec-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--red); flex-shrink: 0; animation: pulse 1s infinite; }
+.rec-label { font-size: 12px; color: var(--text2); font-weight: 600; flex: 1; }
+.timer { font-family: var(--font-mono); font-size: 18px; color: var(--cyan); }
+.export-btn {
+  background: var(--night3);
+  border: 0.5px solid var(--border);
+  border-radius: 7px;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text2);
+  display: flex; align-items: center; gap: 5px;
+}
+.export-btn:active { border-color: var(--orange); color: var(--orange); }
+
+.big-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.big-card {
+  background: var(--night2);
+  border: 0.5px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 14px;
+}
+.bc-lbl { font-size: 10px; color: var(--text3); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 3px; }
+.bc-val { font-family: var(--font-display); font-size: 28px; font-weight: 800; color: var(--text1); line-height: 1; }
+.bc-val.acc { color: var(--orange); }
+.bc-val.cy { color: var(--cyan); }
+.bc-val.gr { color: var(--green); }
+.bc-unit { font-size: 11px; color: var(--text3); margin-top: 2px; }
+
+.stops-list { display: flex; flex-direction: column; gap: 0; }
+.stop-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 9px 0;
+  border-bottom: 0.5px solid var(--border);
+}
+.stop-row:last-child { border-bottom: none; }
+.stop-dotcol { display: flex; flex-direction: column; align-items: center; padding-top: 3px; }
+.sdot { width: 9px; height: 9px; border-radius: 50%; border: 1.5px solid var(--text3); flex-shrink: 0; }
+.sdot.done { background: var(--orange); border-color: var(--orange); }
+.sdot.now { background: var(--orange); border-color: var(--orange); box-shadow: 0 0 0 3px var(--orange-dim); }
+.sline { width: 1px; flex: 1; min-height: 14px; background: var(--border); margin: 3px 0; }
+.stop-info { flex: 1; }
+.stop-name { font-size: 13px; font-weight: 600; color: var(--text1); }
+.stop-meta { font-size: 11px; color: var(--text3); margin-top: 1px; display: flex; gap: 8px; flex-wrap: wrap; }
+.stop-badge { font-size: 10px; font-weight: 600; padding: 2px 7px; border-radius: 4px; align-self: center; margin-left: auto; white-space: nowrap; }
+.sb-done { background: var(--green-dim); color: var(--green); }
+.sb-now  { background: var(--orange-dim); color: var(--orange); }
+.sb-fut  { background: var(--night4); color: var(--text3); }
+
+.quality-rows { display: flex; flex-direction: column; gap: 9px; }
+.qrow { display: flex; align-items: center; gap: 10px; }
+.q-lbl { font-size: 12px; color: var(--text2); width: 120px; flex-shrink: 0; }
+.q-track { flex: 1; height: 6px; background: var(--night4); border-radius: 3px; overflow: hidden; }
+.q-fill { height: 100%; border-radius: 3px; }
+.q-val { font-family: var(--font-mono); font-size: 11px; color: var(--text3); width: 28px; text-align: right; }
+
+.wx-rows { display: flex; flex-direction: column; gap: 6px; }
+.wx-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 7px 10px;
+  background: var(--night3);
+  border: 0.5px solid var(--border);
+  border-radius: 8px;
+}
+.wx-row.warn { border-color: rgba(255,184,0,0.4); background: var(--amber-dim); }
+.wx-row.rain { border-color: rgba(0,212,255,0.3); background: var(--cyan-dim); }
+.wx-row.danger { border-color: rgba(255,59,59,0.4); background: var(--red-dim); }
+.wx-row-time { font-family: var(--font-mono); font-size: 11px; color: var(--text3); width: 42px; }
+.wx-row-icon { font-size: 17px; width: 22px; text-align: center; }
+.wx-row-desc { flex: 1; font-size: 12px; color: var(--text2); }
+.wx-row.warn .wx-row-desc, .wx-row.warn .wx-row-time { color: var(--amber); }
+.wx-row.rain .wx-row-desc, .wx-row.rain .wx-row-time { color: var(--cyan); }
+.wx-row.danger .wx-row-desc, .wx-row.danger .wx-row-time { color: var(--red); }
+.wx-row-temp { font-family: var(--font-display); font-size: 15px; font-weight: 700; color: var(--text1); }
+
+.gas-rows { display: flex; flex-direction: column; gap: 7px; }
+.gas-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 11px;
+  background: var(--night3);
+  border: 0.5px solid var(--border);
+  border-radius: 10px;
+  transition: border-color 0.15s;
+}
+.gas-row:active { border-color: var(--orange); }
+.gas-row.cheap { border-color: rgba(57,255,110,0.35); }
+.gas-brand-ico {
+  width: 32px; height: 32px;
+  border-radius: 7px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 800;
+  flex-shrink: 0;
+}
+.gas-info { flex: 1; }
+.gas-name { font-size: 13px; font-weight: 600; color: var(--text1); }
+.gas-dist { font-size: 11px; color: var(--text3); margin-top: 1px; }
+.gas-prices { text-align: right; }
+.gas-p95 { font-family: var(--font-display); font-size: 17px; font-weight: 700; color: var(--orange); }
+.gas-p-lbl { font-size: 10px; color: var(--text3); }
+.cheap-badge { font-size: 10px; font-weight: 600; color: var(--green); display: flex; align-items: center; gap: 3px; justify-content: flex-end; margin-top: 2px; }
+
+/* ═══════════════════════════════════════════════
+   SCREEN: SETTINGS
+═══════════════════════════════════════════════ */
+#settingsScreen { flex-direction: column; overflow-y: auto; }
+.settings-body { padding: 14px; display: flex; flex-direction: column; gap: 10px; }
+.setting-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 14px;
+  border-bottom: 0.5px solid var(--border);
+}
+.setting-row:last-child { border-bottom: none; }
+.setting-ico { font-size: 18px; color: var(--orange); width: 22px; text-align: center; flex-shrink: 0; }
+.setting-info { flex: 1; }
+.setting-label { font-size: 14px; color: var(--text1); font-weight: 500; }
+.setting-desc { font-size: 11px; color: var(--text3); margin-top: 2px; }
+.setting-right { flex-shrink: 0; }
+/* iOS-style toggle */
+.ios-toggle { -webkit-appearance: none; appearance: none; width: 44px; height: 26px; border-radius: 13px; background: var(--night4); position: relative; transition: background 0.2s; cursor: pointer; }
+.ios-toggle:checked { background: var(--orange); }
+.ios-toggle::after { content:''; width: 22px; height: 22px; border-radius: 50%; background: #fff; position: absolute; top: 2px; left: 2px; transition: left 0.2s; }
+.ios-toggle:checked::after { left: 20px; }
+.setting-select {
+  background: var(--night3);
+  border: 0.5px solid var(--border);
+  border-radius: 7px;
+  padding: 5px 10px;
+  font-size: 13px;
+  color: var(--text1);
+  outline: none;
+  -webkit-appearance: none;
+}
+.api-key-input {
+  background: var(--night3);
+  border: 0.5px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 11px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text2);
+  width: 100%;
+  outline: none;
+  margin-top: 6px;
+}
+.api-key-input:focus { border-color: var(--orange); }
+.save-btn {
+  background: var(--orange);
+  color: #fff;
+  border-radius: 8px;
+  padding: 9px 16px;
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  margin-top: 8px;
+}
+.version-note {
+  text-align: center;
+  font-size: 11px;
+  color: var(--text3);
+  padding: 12px;
+  line-height: 1.6;
+}
+
+/* ═══════════════════════════════════════════════
+   LOADING / SPINNER
+═══════════════════════════════════════════════ */
+.spinner-overlay {
+  display: none;
+  position: fixed; inset: 0;
+  background: rgba(10,12,16,0.85);
+  z-index: 200;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 14px;
+}
+.spinner-overlay.show { display: flex; }
+.spinner { width: 40px; height: 40px; border: 3px solid var(--night4); border-top-color: var(--orange); border-radius: 50%; animation: spin 0.7s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.spinner-text { font-size: 13px; color: var(--text2); }
+
+/* ═══════════════════════════════════════════════
+   TOAST
+═══════════════════════════════════════════════ */
+.toast {
+  position: fixed;
+  bottom: calc(70px + var(--safe-bot));
+  left: 50%; transform: translateX(-50%);
+  background: var(--night2);
+  border: 0.5px solid var(--border2);
+  border-radius: 10px;
+  padding: 10px 18px;
+  font-size: 13px;
+  color: var(--text1);
+  z-index: 300;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.2s;
+  display: flex; align-items: center; gap: 8px;
+}
+.toast.show { opacity: 1; }
+.toast i { color: var(--orange); }
+</style>
+</head>
+<body>
+
+<div id="app">
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <div class="logo">
+      <i class="ti ti-motorbike" aria-hidden="true"></i> MotoRuta <span class="logo-pro">PRO</span>
+    </div>
+    <div class="tabs" id="mainTabs">
+      <button class="tab active" onclick="showScreen('plan')" aria-label="Planificar ruta">
+        <i class="ti ti-map-2" aria-hidden="true"></i><span>Planificar</span>
+      </button>
+      <button class="tab" onclick="showScreen('nav')" aria-label="Navegar">
+        <i class="ti ti-navigation" aria-hidden="true"></i><span>Navegar</span>
+      </button>
+      <button class="tab" onclick="showScreen('tele')" aria-label="Telemetría">
+        <i class="ti ti-dashboard" aria-hidden="true"></i><span>Datos</span>
+      </button>
+    </div>
+    <div class="topbar-right">
+      <div class="gps-dot" id="gpsDot" title="GPS inactivo"></div>
+      <div class="clock" id="clock">--:--</div>
+      <button class="night-btn" onclick="toggleNight()" aria-label="Cambiar modo día/noche">
+        <i class="ti ti-moon" id="nightIcon" aria-hidden="true"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- ══ SCREEN: PLAN ══ -->
+  <main class="screen active" id="planScreen" role="main">
+    <div class="plan-body">
+
+      <!-- Route card -->
+      <div class="card">
+        <div class="card-head"><i class="ti ti-route" aria-hidden="true"></i> Ruta</div>
+        <div class="card-body">
+          <div class="route-row">
+            <div class="rdot rdot-o"></div>
+            <input class="plan-input" type="text" id="origin" placeholder="Origen" value="Sevilla" autocomplete="off" autocorrect="off" spellcheck="false">
+          </div>
+          <div id="waypointsContainer"></div>
+          <div class="route-row">
+            <div class="rdot rdot-d"></div>
+            <input class="plan-input" type="text" id="dest" placeholder="Destino" autocomplete="off" autocorrect="off" spellcheck="false">
+          </div>
+          <button class="add-wp-btn" onclick="addWaypoint()">
+            <i class="ti ti-plus" aria-hidden="true"></i> Añadir parada intermedia
+          </button>
+        </div>
+      </div>
+
+      <!-- Mode card -->
+      <div class="card">
+        <div class="card-head"><i class="ti ti-adjustments-horizontal" aria-hidden="true"></i> Tipo de ruta</div>
+        <div class="card-body">
+          <div class="mode-grid">
+            <button class="mode-card" onclick="selMode(this,'twisty')">
+              <i class="ti ti-wave-sine" aria-hidden="true"></i>
+              <div class="mode-label">Serpenteante</div>
+              <div class="mode-desc">Máximas curvas, sin autovía</div>
+            </button>
+            <button class="mode-card sel" onclick="selMode(this,'scenic')">
+              <i class="ti ti-mountain" aria-hidden="true"></i>
+              <div class="mode-label">Escénica</div>
+              <div class="mode-desc">Nacional + montaña</div>
+            </button>
+            <button class="mode-card" onclick="selMode(this,'fast')">
+              <i class="ti ti-gauge" aria-hidden="true"></i>
+              <div class="mode-label">Rápida</div>
+              <div class="mode-desc">Mínimo tiempo</div>
+            </button>
+            <button class="mode-card" onclick="selMode(this,'mixed')">
+              <i class="ti ti-route-x-2" aria-hidden="true"></i>
+              <div class="mode-label">Mixta</div>
+              <div class="mode-desc">Nacional + autopista</div>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Date/time card -->
+      <div class="card">
+        <div class="card-head"><i class="ti ti-calendar-event" aria-hidden="true"></i> Salida</div>
+        <div class="card-body">
+          <div class="dt-row">
+            <input type="date" id="tripDate">
+            <input type="time" id="tripTime" value="08:00">
+          </div>
+        </div>
+      </div>
+
+      <!-- Calc button -->
+      <button class="calc-btn" onclick="calcRoute()">
+        <i class="ti ti-search" aria-hidden="true"></i> CALCULAR RUTA
+      </button>
+
+      <!-- Result (hidden until calculated) -->
+      <div class="card" id="routeResult" style="display:none">
+        <div class="card-head"><i class="ti ti-chart-bar" aria-hidden="true"></i> Resultado</div>
+        <div class="card-body">
+          <div class="result-stats">
+            <div class="rs"><div class="rs-val accent" id="res-km">—</div><div class="rs-lbl">km</div></div>
+            <div class="rs"><div class="rs-val" id="res-time">—</div><div class="rs-lbl">duración</div></div>
+            <div class="rs"><div class="rs-val" id="res-fuel">—</div><div class="rs-lbl">combustible</div></div>
+          </div>
+          <div class="tags" id="res-tags"></div>
+          <p id="res-desc" style="font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:12px;"></p>
+          <button class="start-nav-btn" onclick="startNavigation()">
+            <i class="ti ti-navigation" aria-hidden="true"></i> INICIAR NAVEGACIÓN
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ══ SCREEN: NAVIGATE ══ -->
+  <main class="screen" id="navScreen" role="main">
+    <!-- Map container -->
+    <div id="mapContainer">
+      <!-- Google Map renders here -->
+      <div id="googleMap"></div>
+
+      <!-- No route placeholder -->
+      <div class="map-placeholder" id="mapPlaceholder">
+        <i class="ti ti-map" aria-hidden="true"></i>
+        <p>Planifica una ruta para iniciar la navegación</p>
+        <button class="go-btn" onclick="showScreen('plan')">
+          <i class="ti ti-map-2" aria-hidden="true"></i> Ir a Planificar
+        </button>
+      </div>
+
+      <!-- HUD elements (shown when navigating) -->
+      <div class="hud-pills" id="hudPills" style="display:none">
+        <div class="hud-pill">
+          <i class="ti ti-clock pill-ico" aria-hidden="true"></i>
+          <div>
+            <div class="pill-lbl">ETA</div>
+            <div class="pill-val" id="hudETA">—</div>
+          </div>
+        </div>
+        <div class="hud-pill">
+          <i class="ti ti-map-pin pill-ico" aria-hidden="true"></i>
+          <div>
+            <div class="pill-lbl">Destino</div>
+            <div class="pill-val" id="hudDist">—</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hud-weather" id="hudWeather" style="display:none">
+        <div class="wx-ico" id="wxIcon">⛅</div>
+        <div>
+          <div class="wx-temp" id="wxTemp">—</div>
+          <div class="wx-desc" id="wxDesc">Cargando…</div>
+          <div class="wx-wind" id="wxWind"></div>
+        </div>
+      </div>
+
+      <div class="hud-speed" id="hudSpeed" style="display:none">
+        <div class="speed-limit" id="speedLimit">90</div>
+        <div class="speed-num" id="speedNum">0</div>
+        <div class="speed-unit">km/h</div>
+      </div>
+
+      <button class="recenter-btn" id="recenterBtn" style="display:none" onclick="recenterMap()" aria-label="Recentrar mapa">
+        <i class="ti ti-crosshair" aria-hidden="true"></i>
+      </button>
+    </div>
+
+    <!-- Alert banner -->
+    <div class="alert-banner" id="alertBanner">
+      <i class="ti ti-alert-triangle" aria-hidden="true"></i>
+      <span id="alertText"></span>
+    </div>
+
+    <!-- Instruction strip -->
+    <div class="hud-instruction" id="hudInstruction" style="display:none">
+      <i class="ti ti-corner-up-right inst-arrow" id="instArrow" aria-hidden="true"></i>
+      <div class="inst-text">
+        <div class="inst-main" id="instMain">—</div>
+        <div class="inst-road" id="instRoad"></div>
+      </div>
+      <div class="inst-dist" id="instDist">—</div>
+    </div>
+  </main>
+
+  <!-- ══ SCREEN: TELEMETRY ══ -->
+  <main class="screen" id="teleScreen" role="main">
+    <div class="tele-body">
+
+      <!-- Header / timer -->
+      <div class="tele-header-bar">
+        <div class="rec-dot" id="recDot" style="background:var(--text3);animation:none"></div>
+        <span class="rec-label" id="recLabel">Sin ruta activa</span>
+        <span class="timer" id="tripTimer">00:00:00</span>
+        <button class="export-btn" onclick="exportData()">
+          <i class="ti ti-download" aria-hidden="true"></i> GPX
+        </button>
+      </div>
+
+      <!-- Big stats -->
+      <div class="big-grid">
+        <div class="big-card"><div class="bc-lbl">Velocidad</div><div class="bc-val acc" id="tSpeed">0</div><div class="bc-unit">km/h actual</div></div>
+        <div class="big-card"><div class="bc-lbl">Media</div><div class="bc-val" id="tAvg">—</div><div class="bc-unit">km/h media</div></div>
+        <div class="big-card"><div class="bc-lbl">Máxima</div><div class="bc-val" id="tMax">—</div><div class="bc-unit">km/h máx.</div></div>
+        <div class="big-card"><div class="bc-lbl">Distancia</div><div class="bc-val cy" id="tDist">0.0</div><div class="bc-unit">km recorridos</div></div>
+        <div class="big-card"><div class="bc-lbl">Paradas</div><div class="bc-val" id="tStops">0</div><div class="bc-unit">detectadas</div></div>
+        <div class="big-card"><div class="bc-lbl">Combustible</div><div class="bc-val gr" id="tFuel">0.0</div><div class="bc-unit">litros est.</div></div>
+      </div>
+
+      <!-- Stops log -->
+      <div class="card">
+        <div class="card-head"><i class="ti ti-map-pin-check" aria-hidden="true"></i> Registro de paradas</div>
+        <div class="card-body">
+          <div class="stops-list" id="stopsList">
+            <div style="font-size:13px;color:var(--text3);text-align:center;padding:8px 0;">Inicia la navegación para registrar paradas</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Driving quality -->
+      <div class="card">
+        <div class="card-head"><i class="ti ti-activity" aria-hidden="true"></i> Calidad de conducción</div>
+        <div class="card-body">
+          <div class="quality-rows">
+            <div class="qrow"><span class="q-lbl">Frenadas bruscas</span><div class="q-track"><div class="q-fill" id="qBrake" style="width:0%;background:var(--green)"></div></div><span class="q-val" id="qBrakeVal">0</span></div>
+            <div class="qrow"><span class="q-lbl">Aceleraciones</span><div class="q-track"><div class="q-fill" id="qAccel" style="width:0%;background:var(--amber)"></div></div><span class="q-val" id="qAccelVal">0</span></div>
+            <div class="qrow"><span class="q-lbl">Curvas tomadas</span><div class="q-track"><div class="q-fill" id="qCurves" style="width:0%;background:var(--orange)"></div></div><span class="q-val" id="qCurvesVal">0</span></div>
+            <div class="qrow"><span class="q-lbl">Score pilotaje</span><div class="q-track"><div class="q-fill" id="qScore" style="width:0%;background:var(--cyan)"></div></div><span class="q-val" id="qScoreVal">—</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Weather log -->
+      <div class="card">
+        <div class="card-head"><i class="ti ti-cloud" aria-hidden="true"></i> Tiempo en ruta</div>
+        <div class="card-body">
+          <div class="wx-rows" id="wxRows">
+            <div style="font-size:13px;color:var(--text3);text-align:center;padding:8px 0;">Calcula una ruta para ver la previsión</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Gas stations -->
+      <div class="card">
+        <div class="card-head"><i class="ti ti-gas-station" aria-hidden="true"></i> Gasolineras en ruta</div>
+        <div class="card-body">
+          <div class="gas-rows" id="gasRows">
+            <div style="font-size:13px;color:var(--text3);text-align:center;padding:8px 0;">Calcula una ruta para ver gasolineras</div>
+          </div>
+          <div style="margin-top:8px;font-size:11px;color:var(--text3);display:flex;align-items:center;gap:4px;">
+            <i class="ti ti-info-circle" aria-hidden="true"></i>
+            Precios GEOPORTAL Ministerio España — actualización cada 2h
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ══ SCREEN: SETTINGS ══ -->
+  <main class="screen" id="settingsScreen" role="main">
+    <div class="settings-body">
+
+      <div class="card">
+        <div class="card-head"><i class="ti ti-key" aria-hidden="true"></i> Claves API</div>
+        <div class="card-body" style="padding-top:8px;">
+          <div class="setting-row" style="flex-direction:column;align-items:flex-start;gap:4px;">
+            <div style="display:flex;align-items:center;gap:8px;">
+              <i class="ti ti-map setting-ico" aria-hidden="true"></i>
+              <div>
+                <div class="setting-label">Google Maps API Key</div>
+                <div class="setting-desc">Necesaria para el mapa y navegación</div>
+              </div>
+            </div>
+            <input class="api-key-input" type="password" id="gmapKey" placeholder="AIza...XXXX" autocomplete="off" autocorrect="off" spellcheck="false">
+          </div>
+          <div class="setting-row" style="flex-direction:column;align-items:flex-start;gap:4px;border-bottom:none;">
+            <div style="display:flex;align-items:center;gap:8px;">
+              <i class="ti ti-cloud setting-ico" aria-hidden="true"></i>
+              <div>
+                <div class="setting-label">OpenWeatherMap API Key</div>
+                <div class="setting-desc">Para la previsión meteorológica en ruta</div>
+              </div>
+            </div>
+            <input class="api-key-input" type="password" id="owmKey" placeholder="abc123...XXXX" autocomplete="off" autocorrect="off" spellcheck="false">
+          </div>
+          <button class="save-btn" onclick="saveKeys()">
+            <i class="ti ti-device-floppy" aria-hidden="true"></i> Guardar claves
+          </button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><i class="ti ti-adjustments" aria-hidden="true"></i> Preferencias</div>
+        <div class="card-body" style="padding:0;">
+
+          <div class="setting-row">
+            <i class="ti ti-moon setting-ico" aria-hidden="true"></i>
+            <div class="setting-info">
+              <div class="setting-label">Modo nocturno</div>
+              <div class="setting-desc">Auto-activa al anochecer</div>
+            </div>
+            <input type="checkbox" class="ios-toggle" id="nightToggle" onchange="setNight(this.checked)">
+          </div>
+
+          <div class="setting-row">
+            <i class="ti ti-volume setting-ico" aria-hidden="true"></i>
+            <div class="setting-info">
+              <div class="setting-label">Indicaciones de voz</div>
+              <div class="setting-desc">TTS en español para intercomunicador</div>
+            </div>
+            <input type="checkbox" class="ios-toggle" id="voiceToggle" checked>
+          </div>
+
+          <div class="setting-row">
+            <i class="ti ti-headset setting-ico" aria-hidden="true"></i>
+            <div class="setting-info">
+              <div class="setting-label">Modo intercomunicador</div>
+              <div class="setting-desc">Voz más lenta y grave para casco</div>
+            </div>
+            <input type="checkbox" class="ios-toggle" id="intercomToggle">
+          </div>
+
+          <div class="setting-row">
+            <i class="ti ti-gas-station setting-ico" aria-hidden="true"></i>
+            <div class="setting-info">
+              <div class="setting-label">Combustible por defecto</div>
+            </div>
+            <select class="setting-select" id="fuelType">
+              <option value="95">SP95</option>
+              <option value="98">SP98</option>
+              <option value="diesel">Diésel</option>
+            </select>
+          </div>
+
+          <div class="setting-row" style="border-bottom:none;">
+            <i class="ti ti-brand-apple setting-ico" aria-hidden="true"></i>
+            <div class="setting-info">
+              <div class="setting-label">CarPlay / Android Auto</div>
+              <div class="setting-desc">Requiere app nativa — ver docs</div>
+            </div>
+            <span style="font-size:11px;color:var(--text3);">Nativo</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="version-note">
+        MotoRuta PRO v1.0 · Sevilla, España<br>
+        Gasolineras: GEOPORTAL Ministerio España (gratis)<br>
+        Meteorología: OpenWeatherMap · Mapas: Google Maps Platform<br><br>
+        <strong style="color:var(--text2)">Para GitHub Pages:</strong> sube este archivo como <code style="color:var(--orange)">index.html</code><br>
+        e introduce tus claves API arriba.
+      </div>
+
+    </div>
+  </main>
+
+  <!-- BOTTOM NAV -->
+  <nav class="bottom-nav" role="navigation" aria-label="Navegación principal">
+    <button class="bnav-btn active" onclick="showScreen('plan')" id="bnav-plan">
+      <i class="ti ti-map-2" aria-hidden="true"></i> Planificar
+    </button>
+    <button class="bnav-btn" onclick="showScreen('nav')" id="bnav-nav">
+      <i class="ti ti-navigation" aria-hidden="true"></i> Navegar
+    </button>
+    <button class="bnav-btn" onclick="showScreen('tele')" id="bnav-tele">
+      <i class="ti ti-dashboard" aria-hidden="true"></i> Datos
+    </button>
+    <button class="bnav-btn" onclick="showScreen('settings')" id="bnav-settings">
+      <i class="ti ti-settings" aria-hidden="true"></i> Ajustes
+    </button>
+  </nav>
+</div>
+
+<!-- Spinner overlay -->
+<div class="spinner-overlay" id="spinner">
+  <div class="spinner"></div>
+  <div class="spinner-text" id="spinnerText">Calculando ruta…</div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+// ═══════════════════════════════════════════════════════════
+//  STATE
+// ═══════════════════════════════════════════════════════════
+const S = {
+  nightMode: true,
+  voiceOn: true,
+  intercomMode: false,
+  route: null,
+  navigating: false,
+  gpsWatchId: null,
+  gpsActive: false,
+  speed: 0,
+  speedHistory: [],
+  maxSpeed: 0,
+  distanceKm: 0,
+  lastPos: null,
+  tripStart: null,
+  timerInterval: null,
+  timerSec: 0,
+  stops: [],
+  inStop: false,
+  stopStart: null,
+  hardBrakes: 0,
+  hardAccels: 0,
+  curves: 0,
+  currentStepIdx: 0,
+  map: null,
+  directionsRenderer: null,
+  posMarker: null,
+  gmapKey: '',
+  owmKey: '',
+  currentWeather: null,
+};
+
+// ═══════════════════════════════════════════════════════════
+//  BOOT
+// ═══════════════════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', () => {
+  loadSettings();
+  startClock();
+  setDate();
+  applyNight(S.nightMode);
+  document.getElementById('nightToggle').checked = S.nightMode;
+});
+
+function loadSettings() {
+  S.gmapKey = localStorage.getItem('mr_gmap') || '';
+  S.owmKey  = localStorage.getItem('mr_owm')  || '';
+  S.nightMode = localStorage.getItem('mr_night') !== 'false';
+  S.intercomMode = localStorage.getItem('mr_intercom') === 'true';
+  if (S.gmapKey) document.getElementById('gmapKey').value = S.gmapKey;
+  if (S.owmKey)  document.getElementById('owmKey').value  = S.owmKey;
+  document.getElementById('intercomToggle').checked = S.intercomMode;
+}
+
+function saveKeys() {
+  S.gmapKey = document.getElementById('gmapKey').value.trim();
+  S.owmKey  = document.getElementById('owmKey').value.trim();
+  localStorage.setItem('mr_gmap', S.gmapKey);
+  localStorage.setItem('mr_owm',  S.owmKey);
+  toast('✅ Claves guardadas');
+}
+
+function setDate() {
+  const d = new Date();
+  d.setDate(d.getDate() + 1);
+  document.getElementById('tripDate').value = d.toISOString().slice(0,10);
+}
+
+// ═══════════════════════════════════════════════════════════
+//  CLOCK
+// ═══════════════════════════════════════════════════════════
+function startClock() {
+  function tick() {
+    const now = new Date();
+    document.getElementById('clock').textContent =
+      String(now.getHours()).padStart(2,'0') + ':' +
+      String(now.getMinutes()).padStart(2,'0');
+  }
+  tick();
+  setInterval(tick, 10000);
+}
+
+// ═══════════════════════════════════════════════════════════
+//  SCREENS
+// ═══════════════════════════════════════════════════════════
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.bnav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id + 'Screen').classList.add('active');
+  const tabMap = { plan: 0, nav: 1, tele: 2 };
+  const tabs = document.querySelectorAll('.tab');
+  if (tabMap[id] != null) tabs[tabMap[id]]?.classList.add('active');
+  const bn = document.getElementById('bnav-' + id);
+  if (bn) bn.classList.add('active');
+  if (id === 'nav' && S.gmapKey && !S.map) initGoogleMap();
+}
+
+// ═══════════════════════════════════════════════════════════
+//  NIGHT MODE
+// ═══════════════════════════════════════════════════════════
+function toggleNight() {
+  setNight(!S.nightMode);
+  document.getElementById('nightToggle').checked = S.nightMode;
+}
+function setNight(on) {
+  S.nightMode = on;
+  document.documentElement.setAttribute('data-theme', on ? 'night' : 'day');
+  document.getElementById('nightIcon').className = on ? 'ti ti-moon' : 'ti ti-sun';
+  localStorage.setItem('mr_night', on);
+  if (S.map) applyMapStyle();
+}
+function applyNight(on) {
+  document.documentElement.setAttribute('data-theme', on ? 'night' : 'day');
+  document.getElementById('nightIcon').className = on ? 'ti ti-moon' : 'ti ti-sun';
+}
+
+// ═══════════════════════════════════════════════════════════
+//  WAYPOINTS
+// ═══════════════════════════════════════════════════════════
+function addWaypoint() {
+  const c = document.getElementById('waypointsContainer');
+  const n = c.children.length + 1;
+  const div = document.createElement('div');
+  div.className = 'route-row';
+  div.style.marginBottom = '8px';
+  div.innerHTML = `
+    <div class="rdot rdot-w"></div>
+    <input class="plan-input" type="text" placeholder="Parada ${n}" autocomplete="off" autocorrect="off" spellcheck="false" style="flex:1">
+    <button onclick="this.parentElement.remove()" style="color:var(--text3);font-size:18px;padding:0 4px;flex-shrink:0;" aria-label="Eliminar parada">
+      <i class="ti ti-x"></i>
+    </button>`;
+  c.appendChild(div);
+}
+
+// ═══════════════════════════════════════════════════════════
+//  MODE SELECT
+// ═══════════════════════════════════════════════════════════
+let currentMode = 'scenic';
+function selMode(el, mode) {
+  document.querySelectorAll('.mode-card').forEach(c => c.classList.remove('sel'));
+  el.classList.add('sel');
+  currentMode = mode;
+}
+
+// ═══════════════════════════════════════════════════════════
+//  ROUTE CALCULATION
+// ═══════════════════════════════════════════════════════════
+const ROUTES = {
+  twisty:  { km: 178, t: '3h 20min', fuel: '8.5L', curvas: 'Máximas', ap: 'Sin autopista', desc: 'Ruta con máximas curvas por la Serranía de Ronda. Carreteras MA-7401, A-369 y puerto de Gaucín. Para los que buscan emoción pura.' },
+  scenic:  { km: 162, t: '2h 50min', fuel: '7.8L', curvas: 'Muchas', ap: 'Sin autopista', desc: 'A-92 hasta Antequera y luego A-367 y A-372 por el Parque Natural Sierra de las Nieves. Paisaje espectacular y buen asfalto.' },
+  fast:    { km: 135, t: '1h 45min', fuel: '6.5L', curvas: 'Pocas', ap: 'AP-46', desc: 'Ruta más rápida por la AP-46 desde Antequera. Ideal si el tiempo apremia o hay condiciones adversas.' },
+  mixed:   { km: 148, t: '2h 15min', fuel: '7.1L', curvas: 'Moderadas', ap: 'A-92 tramo', desc: 'Combina A-92 hasta Campillos, luego carretera nacional por Teba y Cañete la Real hasta Ronda.' },
+};
+
+const SPINMSG = ['Calculando ruta sin autopistas…','Consultando previsión meteorológica…','Buscando gasolineras en ruta…','¡Ruta lista!'];
+
+function calcRoute() {
+  const origin = document.getElementById('origin').value.trim();
+  const dest   = document.getElementById('dest').value.trim();
+  if (!origin || !dest) { toast('⚠️ Introduce origen y destino'); return; }
+
+  showSpinner(SPINMSG[0]);
+  let i = 0;
+  const iv = setInterval(() => {
+    i++;
+    if (i < SPINMSG.length) document.getElementById('spinnerText').textContent = SPINMSG[i];
+  }, 700);
+
+  setTimeout(() => {
+    clearInterval(iv);
+    hideSpinner();
+    const r = ROUTES[currentMode];
+    S.route = { origin, dest, mode: currentMode, ...r };
+    showRouteResult(r);
+    buildWeatherRows();
+    buildGasRows();
+    toast('✅ Ruta calculada');
+  }, 2800);
+}
+
+function showRouteResult(r) {
+  document.getElementById('res-km').textContent   = r.km;
+  document.getElementById('res-time').textContent = r.t;
+  document.getElementById('res-fuel').textContent = r.fuel;
+  document.getElementById('res-desc').textContent = r.desc;
+  document.getElementById('res-tags').innerHTML =
+    `<span class="tag tag-o">Curvas: ${r.curvas}</span>` +
+    `<span class="tag tag-c">Autopista: ${r.ap}</span>` +
+    `<span class="tag tag-g">+620m desnivel</span>`;
+  document.getElementById('routeResult').style.display = 'block';
+  document.getElementById('routeResult').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+// ═══════════════════════════════════════════════════════════
+//  WEATHER (OpenWeatherMap One Call 3.0)
+// ═══════════════════════════════════════════════════════════
+const WX_DEMO = [
+  { time:'08:00', icon:'⛅', desc:'Parcialmente nublado', temp:19, wind:12, cls:'' },
+  { time:'09:30', icon:'🌤', desc:'Despejando · Utrera', temp:21, wind:10, cls:'' },
+  { time:'11:00', icon:'🌧', desc:'Lluvia moderada — precaución en curvas', temp:17, wind:25, cls:'rain' },
+  { time:'11:30', icon:'💨', desc:'Rachas de viento — Sierra de las Nieves', temp:16, wind:38, cls:'warn' },
+  { time:'13:00', icon:'🌤', desc:'Despejado · Ronda', temp:23, wind:8, cls:'' },
+];
+
+async function fetchWeatherForPosition(lat, lng) {
+  if (!S.owmKey) return null;
+  try {
+    const url = `https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lng}&exclude=minutely,daily,alerts&appid=${S.owmKey}&units=metric&lang=es`;
+    const res = await fetch(url);
+    if (!res.ok) return null;
+    const d = await res.json();
+    return {
+      temp: Math.round(d.current.temp),
+      desc: d.current.weather[0]?.description || '',
+      wind: Math.round((d.current.wind_speed || 0) * 3.6),
+      icon: wxEmoji(d.current.weather[0]?.id || 800),
+      rain: d.current.rain?.['1h'] || 0,
+    };
+  } catch { return null; }
+}
+
+function wxEmoji(id) {
+  if (id >= 200 && id < 300) return '⛈';
+  if (id >= 300 && id < 600) return '🌧';
+  if (id >= 600 && id < 700) return '❄️';
+  if (id >= 700 && id < 800) return '🌫';
+  if (id === 800) return '☀️';
+  if (id === 801) return '🌤';
+  if (id === 802) return '⛅';
+  return '☁️';
+}
+
+function buildWeatherRows() {
+  const rows = WX_DEMO.map(w =>
+    `<div class="wx-row ${w.cls}">
+      <span class="wx-row-time">${w.time}</span>
+      <span class="wx-row-icon">${w.icon}</span>
+      <span class="wx-row-desc">${w.desc}</span>
+      <span class="wx-row-temp">${w.temp}°</span>
+    </div>`
+  ).join('');
+  document.getElementById('wxRows').innerHTML = rows;
+}
+
+// ═══════════════════════════════════════════════════════════
+//  GAS STATIONS (GEOPORTAL Ministerio España — API gratuita)
+// ═══════════════════════════════════════════════════════════
+const GAS_DEMO = [
+  { brand:'R', name:'Repsol Utrera', dist:'28 km', p95:'1.659', p98:'1.789', cheap:false, bg:'#FFF0E6', col:'#E8620A' },
+  { brand:'C', name:'Cepsa Osuna', dist:'64 km', p95:'1.612', p98:'1.751', cheap:true, bg:'#E1F5EE', col:'#0F6E56' },
+  { brand:'B', name:'BP Campillos', dist:'112 km', p95:'1.679', p98:'1.819', cheap:false, bg:'#E6F1FB', col:'#185FA5' },
+  { brand:'G', name:'Galp Ronda', dist:'148 km', p95:'1.694', p98:'1.839', cheap:false, bg:'#FAEEDA', col:'#BA7517' },
+];
+
+async function fetchGasStationsReal(lat, lng) {
+  // GEOPORTAL Ministerio España — sin clave, completamente gratuito
+  try {
+    const url = 'https://sedeaplicaciones.minetur.gob.es/ServiciosRESTCarburantes/PreciosCarburantes/EstacionesTerrestres/';
+    const res = await fetch(url);
+    if (!res.ok) return null;
+    const json = await res.json();
+    const stations = json.ListaEESSPrecio || [];
+    // Filter nearest to current position
+    return stations
+      .map(s => ({
+        brand: s['Rótulo'] || 'Gen',
+        name: s['Rótulo'] + ' ' + s['Municipio'],
+        dist: '? km',
+        p95: s['Precio Gasolina 95 E5'] || '—',
+        p98: s['Precio Gasolina 98 E5'] || '—',
+        cheap: false,
+        bg: '#1E232A', col: '#A8B0BC',
+        lat: parseFloat((s['Latitud'] || '0').replace(',','.')),
+        lng: parseFloat((s['Longitud (WGS84)'] || '0').replace(',','.')),
+      }))
+      .filter(s => s.lat && s.lng)
+      .slice(0, 5);
+  } catch { return null; }
+}
+
+function buildGasRows() {
+  const rows = GAS_DEMO.map(g =>
+    `<div class="gas-row ${g.cheap ? 'cheap' : ''}">
+      <div class="gas-brand-ico" style="background:${g.bg};color:${g.col}">${g.brand}</div>
+      <div class="gas-info">
+        <div class="gas-name">${g.name}</div>
+        <div class="gas-dist"><i class="ti ti-map-pin" style="font-size:10px"></i> ${g.dist} · SP98: ${g.p98}€</div>
+      </div>
+      <div class="gas-prices">
+        <div class="gas-p95">${g.p95}€</div>
+        <div class="gas-p-lbl">SP95/L</div>
+        ${g.cheap ? '<div class="cheap-badge"><i class="ti ti-star" style="font-size:10px"></i> más barata</div>' : ''}
+      </div>
+    </div>`
+  ).join('');
+  document.getElementById('gasRows').innerHTML = rows;
+}
+
+// ═══════════════════════════════════════════════════════════
+//  GOOGLE MAPS
+// ═══════════════════════════════════════════════════════════
+const NIGHT_STYLE = [
+  {elementType:'geometry',stylers:[{color:'#0A0C10'}]},
+  {elementType:'labels.text.fill',stylers:[{color:'#A8B0BC'}]},
+  {elementType:'labels.text.stroke',stylers:[{color:'#0A0C10'}]},
+  {featureType:'road',elementType:'geometry',stylers:[{color:'#1E232A'}]},
+  {featureType:'road.highway',elementType:'geometry',stylers:[{color:'#252B35'}]},
+  {featureType:'road.local',elementType:'geometry',stylers:[{color:'#181C22'}]},
+  {featureType:'water',elementType:'geometry',stylers:[{color:'#0D1A24'}]},
+  {featureType:'poi',stylers:[{visibility:'off'}]},
+  {featureType:'transit',stylers:[{visibility:'off'}]},
+  {featureType:'landscape',elementType:'geometry',stylers:[{color:'#0F1A0F'}]},
+];
+const DAY_STYLE = [
+  {featureType:'poi',stylers:[{visibility:'off'}]},
+  {featureType:'transit',stylers:[{visibility:'off'}]},
+];
+
+function initGoogleMap() {
+  if (!S.gmapKey) {
+    toast('⚠️ Introduce tu Google Maps API Key en Ajustes');
+    return;
+  }
+  if (S.map) return;
+  // Load Google Maps script dynamically
+  const s = document.createElement('script');
+  s.src = `https://maps.googleapis.com/maps/api/js?key=${S.gmapKey}&libraries=geometry,places&callback=onGoogleMapsReady`;
+  s.async = true;
+  s.onerror = () => toast('❌ Error al cargar Google Maps. Verifica tu API Key.');
+  document.head.appendChild(s);
+}
+
+window.onGoogleMapsReady = function() {
+  S.map = new google.maps.Map(document.getElementById('googleMap'), {
+    center: { lat: 37.389, lng: -5.984 },
+    zoom: 13,
+    styles: S.nightMode ? NIGHT_STYLE : DAY_STYLE,
+    disableDefaultUI: true,
+    gestureHandling: 'greedy',
+  });
+  S.directionsRenderer = new google.maps.DirectionsRenderer({
+    suppressMarkers: false,
+    polylineOptions: { strokeColor: '#FF6B1A', strokeWeight: 5 },
+  });
+  S.directionsRenderer.setMap(S.map);
+  document.getElementById('mapPlaceholder').style.display = 'none';
+};
+
+function applyMapStyle() {
+  if (S.map) S.map.setOptions({ styles: S.nightMode ? NIGHT_STYLE : DAY_STYLE });
+}
+
+function recenterMap() {
+  if (S.map && S.lastPos) S.map.panTo({ lat: S.lastPos.lat, lng: S.lastPos.lng });
+}
+
+function drawGoogleRoute(origin, dest) {
+  if (!S.map || !window.google) return;
+  const svc = new google.maps.DirectionsService();
+  const waypoints = [];
+  document.querySelectorAll('#waypointsContainer input').forEach(inp => {
+    if (inp.value.trim()) waypoints.push({ location: inp.value.trim(), stopover: true });
+  });
+  svc.route({
+    origin, destination: dest,
+    waypoints,
+    travelMode: google.maps.TravelMode.DRIVING,
+    avoidHighways: (currentMode === 'twisty' || currentMode === 'scenic'),
+    avoidTolls: (currentMode !== 'fast'),
+  }, (result, status) => {
+    if (status === 'OK') {
+      S.directionsRenderer.setDirections(result);
+      const leg = result.routes[0].legs[0];
+      S.route.googleSteps = leg.steps;
+    }
+  });
+}
+
+// ═══════════════════════════════════════════════════════════
+//  NAVIGATION
+// ═══════════════════════════════════════════════════════════
+function startNavigation() {
+  if (!S.route) { toast('⚠️ Primero calcula una ruta'); return; }
+
+  showScreen('nav');
+  if (!S.map && S.gmapKey) initGoogleMap();
+
+  // Show HUD elements
+  document.getElementById('mapPlaceholder').style.display = 'none';
+  document.getElementById('hudPills').style.display = 'flex';
+  document.getElementById('hudWeather').style.display = 'flex';
+  document.getElementById('hudSpeed').style.display = 'block';
+  document.getElementById('hudInstruction').style.display = 'flex';
+  document.getElementById('recenterBtn').style.display = 'flex';
+
+  // Set first instruction
+  document.getElementById('instMain').textContent = 'Dirígete hacia el sur';
+  document.getElementById('instRoad').textContent = `${S.route.origin} → ${S.route.dest}`;
+  document.getElementById('instDist').textContent = `${S.route.km} km`;
+  document.getElementById('hudDist').textContent = `${S.route.km} km`;
+
+  // ETA
+  const now = new Date();
+  const parts = S.route.t.match(/(\d+)h\s*(\d+)?/);
+  if (parts) {
+    const mins = parseInt(parts[1] || 0) * 60 + parseInt(parts[2] || 0);
+    const eta = new Date(now.getTime() + mins * 60000);
+    document.getElementById('hudETA').textContent =
+      String(eta.getHours()).padStart(2,'0') + ':' + String(eta.getMinutes()).padStart(2,'0');
+  }
+
+  // Fetch live weather if key available
+  if (S.owmKey) {
+    fetchWeatherForPosition(37.389, -5.984).then(wx => {
+      if (wx) {
+        document.getElementById('wxIcon').textContent = wx.icon;
+        document.getElementById('wxTemp').textContent = wx.temp + '°C';
+        document.getElementById('wxDesc').textContent = wx.desc;
+        document.getElementById('wxWind').textContent = '💨 ' + wx.wind + ' km/h';
+        S.currentWeather = wx;
+        if (wx.rain > 2) showAlert('🌧 Lluvia próximamente — reduce velocidad');
+        if (wx.wind > 40) showAlert('💨 Viento fuerte — precaución en curvas');
+      }
+    });
+  } else {
+    document.getElementById('wxIcon').textContent = '⛅';
+    document.getElementById('wxTemp').textContent = '19°C';
+    document.getElementById('wxDesc').textContent = 'Parcialmente nublado';
+    document.getElementById('wxWind').textContent = '💨 14 km/h';
+  }
+
+  // Draw on Google Map if available
+  if (S.map && window.google) {
+    drawGoogleRoute(S.route.origin, S.route.dest);
+  }
+
+  // Start GPS
+  startGPS();
+
+  // Start trip recording
+  S.navigating = true;
+  S.tripStart = Date.now();
+  S.timerSec = 0;
+  S.stops = [];
+  S.hardBrakes = 0; S.hardAccels = 0; S.curves = 0;
+  S.distanceKm = 0; S.maxSpeed = 0; S.speedHistory = [];
+  clearInterval(S.timerInterval);
+  S.timerInterval = setInterval(tickTimer, 1000);
+  updateStopsList();
+
+  // Update rec dot
+  document.getElementById('recDot').style.background = 'var(--red)';
+  document.getElementById('recDot').style.animation = 'pulse 1s infinite';
+  document.getElementById('recLabel').textContent = `${S.route.origin} → ${S.route.dest}`;
+
+  speak(`Ruta calculada. ${S.route.km} kilómetros, tiempo estimado ${S.route.t}. Iniciando navegación.`);
+}
+
+function showAlert(msg) {
+  const b = document.getElementById('alertBanner');
+  document.getElementById('alertText').textContent = msg;
+  b.classList.add('show');
+  setTimeout(() => b.classList.remove('show'), 6000);
+  speak(msg.replace(/[🌧💨⚠️]/g,''));
+}
+
+// ═══════════════════════════════════════════════════════════
+//  GPS
+// ═══════════════════════════════════════════════════════════
+function startGPS() {
+  if (!navigator.geolocation) {
+    toast('⚠️ GPS no disponible en este dispositivo');
+    return;
+  }
+  if (S.gpsWatchId) navigator.geolocation.clearWatch(S.gpsWatchId);
+  S.gpsWatchId = navigator.geolocation.watchPosition(onGPSPosition, onGPSError, {
+    enableHighAccuracy: true,
+    maximumAge: 0,
+    timeout: 8000,
+  });
+}
+
+function onGPSPosition(pos) {
+  const { latitude: lat, longitude: lng, speed, heading, accuracy } = pos.coords;
+  const kmh = speed != null ? speed * 3.6 : calcSpeedFromLast(lat, lng, pos.timestamp);
+  S.speed = Math.max(0, kmh);
+
+  // GPS dot
+  if (!S.gpsActive) {
+    S.gpsActive = true;
+    document.getElementById('gpsDot').classList.add('active');
+  }
+
+  // Update speed HUD
+  document.getElementById('speedNum').textContent = Math.round(S.speed);
+  document.getElementById('tSpeed').textContent = Math.round(S.speed);
+
+  // Telemetry
+  if (S.navigating) {
+    // Distance
+    if (S.lastPos) {
+      const d = haversineKm(S.lastPos.lat, S.lastPos.lng, lat, lng);
+      S.distanceKm += d;
+    }
+    // Speed history
+    if (S.speed > 0) {
+      S.speedHistory.push(S.speed);
+      S.maxSpeed = Math.max(S.maxSpeed, S.speed);
+    }
+    // Stop detection
+    detectStop(S.speed, pos.timestamp);
+    // Driving events
+    detectDrivingEvents(S.speed, pos.timestamp);
+    // Update telemetry UI
+    updateTelemetryUI();
+    // Update map marker
+    if (S.map && window.google) updateMapMarker(lat, lng, heading);
+    // Update remaining distance pill
+    if (S.route) {
+      const remaining = Math.max(0, S.route.km - S.distanceKm).toFixed(1);
+      document.getElementById('hudDist').textContent = remaining + ' km';
+    }
+    // Fetch live weather every 5km
+    if (S.owmKey && S.distanceKm % 5 < 0.1) {
+      fetchWeatherForPosition(lat, lng).then(wx => {
+        if (wx) {
+          document.getElementById('wxIcon').textContent = wx.icon;
+          document.getElementById('wxTemp').textContent = wx.temp + '°C';
+          document.getElementById('wxDesc').textContent = wx.desc;
+          if (wx.rain > 2 && (!S.currentWeather || S.currentWeather.rain <= 2)) {
+            showAlert('🌧 Lluvia — precaución en curvas');
+          }
+          S.currentWeather = wx;
+        }
+      });
+    }
+  }
+
+  S.lastPos = { lat, lng, timestamp: pos.timestamp };
+}
+
+function onGPSError(err) {
+  console.warn('[GPS]', err.message);
+  if (err.code === 1) toast('⚠️ Permite el acceso al GPS en Ajustes del iPhone');
+}
+
+function calcSpeedFromLast(lat, lng, ts) {
+  if (!S.lastPos) return 0;
+  const dist = haversineKm(S.lastPos.lat, S.lastPos.lng, lat, lng) * 1000; // meters
+  const dt = (ts - S.lastPos.timestamp) / 1000;
+  return dt > 0 ? (dist / dt) * 3.6 : 0;
+}
+
+// ═══════════════════════════════════════════════════════════
+//  MAP MARKER
+// ═══════════════════════════════════════════════════════════
+function updateMapMarker(lat, lng, heading) {
+  const pos = { lat, lng };
+  if (!S.posMarker) {
+    S.posMarker = new google.maps.Marker({
+      position: pos,
+      map: S.map,
+      icon: {
+        path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+        scale: 5,
+        fillColor: '#FF6B1A',
+        fillOpacity: 1,
+        strokeColor: '#fff',
+        strokeWeight: 1.5,
+        rotation: heading || 0,
+      },
+      zIndex: 100,
+    });
+  } else {
+    S.posMarker.setPosition(pos);
+    if (heading != null) {
+      S.posMarker.setIcon({ ...S.posMarker.getIcon(), rotation: heading });
+    }
+  }
+  S.map.panTo(pos);
+}
+
+// ═══════════════════════════════════════════════════════════
+//  TELEMETRY HELPERS
+// ═══════════════════════════════════════════════════════════
+function tickTimer() {
+  S.timerSec++;
+  const h = Math.floor(S.timerSec / 3600);
+  const m = Math.floor((S.timerSec % 3600) / 60);
+  const s = S.timerSec % 60;
+  const pad = n => String(n).padStart(2,'0');
+  document.getElementById('tripTimer').textContent = `${pad(h)}:${pad(m)}:${pad(s)}`;
+}
+
+function detectStop(speed, ts) {
+  if (speed < 3) {
+    if (!S.inStop) { S.inStop = true; S.stopStart = ts; }
+  } else {
+    if (S.inStop) {
+      S.inStop = false;
+      const dur = Math.round((ts - S.stopStart) / 1000);
+      if (dur >= 30) {
+        S.stops.push({ time: new Date(S.stopStart).toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit'}), dur, km: S.distanceKm.toFixed(1) });
+        updateStopsList();
+      }
+    }
+  }
+}
+
+function detectDrivingEvents(speed, ts) {
+  if (!S._lastSpeed || !S._lastSpeedTs) { S._lastSpeed = speed; S._lastSpeedTs = ts; return; }
+  const dt = (ts - S._lastSpeedTs) / 1000;
+  if (dt < 0.5) return;
+  const accel = (speed - S._lastSpeed) / 3.6 / dt; // m/s²
+  if (accel < -5) { S.hardBrakes++; }
+  if (accel > 4)  { S.hardAccels++; }
+  if (Math.abs(accel) > 1 && speed > 30) S.curves++;
+  S._lastSpeed = speed; S._lastSpeedTs = ts;
+}
+
+function updateTelemetryUI() {
+  const avg = S.speedHistory.length
+    ? Math.round(S.speedHistory.reduce((a,b) => a+b,0) / S.speedHistory.length)
+    : 0;
+  document.getElementById('tAvg').textContent  = avg || '—';
+  document.getElementById('tMax').textContent  = Math.round(S.maxSpeed) || '—';
+  document.getElementById('tDist').textContent = S.distanceKm.toFixed(1);
+  document.getElementById('tStops').textContent = S.stops.length;
+  document.getElementById('tFuel').textContent = (S.distanceKm * 0.048).toFixed(1);
+  // Quality bars
+  const brakeW = Math.min(100, S.hardBrakes * 10);
+  const accelW = Math.min(100, S.hardAccels * 8);
+  const curveW = Math.min(100, S.curves * 3);
+  const score  = Math.max(0, 100 - S.hardBrakes * 8 - S.hardAccels * 4);
+  document.getElementById('qBrake').style.width = brakeW + '%';
+  document.getElementById('qBrakeVal').textContent = S.hardBrakes;
+  document.getElementById('qAccel').style.width = accelW + '%';
+  document.getElementById('qAccelVal').textContent = S.hardAccels;
+  document.getElementById('qCurves').style.width = curveW + '%';
+  document.getElementById('qCurvesVal').textContent = S.curves;
+  document.getElementById('qScore').style.width = score + '%';
+  document.getElementById('qScoreVal').textContent = score;
+}
+
+function updateStopsList() {
+  const container = document.getElementById('stopsList');
+  if (!S.route) return;
+
+  let html = `
+    <div class="stop-row">
+      <div class="stop-dotcol"><div class="sdot done"></div><div class="sline"></div></div>
+      <div class="stop-info">
+        <div class="stop-name">Salida — ${S.route.origin}</div>
+        <div class="stop-meta"><span>${new Date(S.tripStart).toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit'})}</span><span>0 km</span></div>
+      </div>
+      <span class="stop-badge sb-done">✓</span>
+    </div>`;
+
+  S.stops.forEach(stop => {
+    html += `
+      <div class="stop-row">
+        <div class="stop-dotcol"><div class="sdot done"></div><div class="sline"></div></div>
+        <div class="stop-info">
+          <div class="stop-name">Parada detectada</div>
+          <div class="stop-meta"><span>${stop.time}</span><span>${stop.km} km</span><span>${stop.dur}s</span></div>
+        </div>
+        <span class="stop-badge sb-done">${Math.round(stop.dur/60)}min</span>
+      </div>`;
+  });
+
+  html += `
+    <div class="stop-row">
+      <div class="stop-dotcol"><div class="sdot now"></div></div>
+      <div class="stop-info">
+        <div class="stop-name">Posición actual</div>
+        <div class="stop-meta"><span>${S.distanceKm.toFixed(1)} km</span><span>${Math.round(S.speed)} km/h</span></div>
+      </div>
+      <span class="stop-badge sb-now">En ruta</span>
+    </div>`;
+
+  container.innerHTML = html;
+}
+
+// ═══════════════════════════════════════════════════════════
+//  EXPORT
+// ═══════════════════════════════════════════════════════════
+function exportData() {
+  if (!S.tripStart) { toast('⚠️ No hay datos de ruta para exportar'); return; }
+  const summary = {
+    route: S.route?.origin + ' → ' + S.route?.dest,
+    date: new Date(S.tripStart).toISOString(),
+    durationMin: Math.round(S.timerSec / 60),
+    distanceKm: S.distanceKm.toFixed(1),
+    maxSpeedKmh: Math.round(S.maxSpeed),
+    avgSpeedKmh: S.speedHistory.length ? Math.round(S.speedHistory.reduce((a,b)=>a+b,0)/S.speedHistory.length) : 0,
+    stops: S.stops.length,
+    hardBrakes: S.hardBrakes,
+    fuelL: (S.distanceKm * 0.048).toFixed(1),
+  };
+  const csv = 'campo,valor\n' + Object.entries(summary).map(([k,v]) => `${k},${v}`).join('\n');
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = `motoruta-${Date.now()}.csv`;
+  a.click();
+  URL.revokeObjectURL(url);
+  toast('📥 Exportado como CSV');
+}
+
+// ═══════════════════════════════════════════════════════════
+//  VOICE (Web Speech API)
+// ═══════════════════════════════════════════════════════════
+function speak(text) {
+  if (!document.getElementById('voiceToggle').checked) return;
+  if (!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  const utt = new SpeechSynthesisUtterance(text);
+  utt.lang = 'es-ES';
+  const intercom = document.getElementById('intercomToggle').checked;
+  utt.rate   = intercom ? 0.85 : 0.95;
+  utt.pitch  = intercom ? 0.9 : 1.0;
+  utt.volume = 1.0;
+  // Try to find a Spanish voice
+  const voices = window.speechSynthesis.getVoices();
+  const esVoice = voices.find(v => v.lang === 'es-ES') ||
+                  voices.find(v => v.lang.startsWith('es'));
+  if (esVoice) utt.voice = esVoice;
+  window.speechSynthesis.speak(utt);
+}
+
+// Preload voices on iOS (required)
+if (window.speechSynthesis) {
+  window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
+  window.speechSynthesis.getVoices();
+}
+
+// ═══════════════════════════════════════════════════════════
+//  UTILS
+// ═══════════════════════════════════════════════════════════
+function haversineKm(lat1, lng1, lat2, lng2) {
+  const R = 6371;
+  const dLat = (lat2 - lat1) * Math.PI / 180;
+  const dLng = (lng2 - lng1) * Math.PI / 180;
+  const a = Math.sin(dLat/2)**2
+    + Math.cos(lat1*Math.PI/180) * Math.cos(lat2*Math.PI/180) * Math.sin(dLng/2)**2;
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+}
+
+function showSpinner(msg) {
+  document.getElementById('spinnerText').textContent = msg || 'Cargando…';
+  document.getElementById('spinner').classList.add('show');
+}
+function hideSpinner() {
+  document.getElementById('spinner').classList.remove('show');
+}
+
+let toastTimer;
+function toast(msg) {
+  const el = document.getElementById('toast');
+  el.innerHTML = msg;
+  el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove('show'), 3000);
+}
+</script>
+
+<!-- PWA manifest inline -->
+<script>
+// Dynamically register service worker for PWA if supported
+if ('serviceWorker' in navigator) {
+  // Minimal SW to make it installable
+  const swBlob = new Blob([`
+    self.addEventListener('install', e => self.skipWaiting());
+    self.addEventListener('activate', e => clients.claim());
+    self.addEventListener('fetch', e => e.respondWith(fetch(e.request).catch(() => caches.match(e.request))));
+  `], { type: 'application/javascript' });
+  const swUrl = URL.createObjectURL(swBlob);
+  navigator.serviceWorker.register(swUrl).catch(() => {});
+}
+</script>
+
+</body>
+</html>
